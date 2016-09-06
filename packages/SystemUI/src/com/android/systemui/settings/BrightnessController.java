@@ -37,7 +37,14 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.service.vr.IVrManager;
 import android.service.vr.IVrStateCallbacks;
 import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
+import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE;
+import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
+import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
 
 import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE;
 import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
@@ -204,6 +211,12 @@ public class BrightnessController implements ToggleSlider.Listener {
             } else {
                 mHandler.obtainMessage(MSG_SET_CHECKED, 0).sendToTarget();
                 mHandler.obtainMessage(MSG_UPDATE_ICON, 0 /* automatic */).sendToTarget();
+            }
+            if (mAutoBrightness != null) {
+                mAutoBrightness.setChecked(Settings.System.getInt(
+                    mContext.getContentResolver(),
+                    SCREEN_BRIGHTNESS_MODE,
+                    SCREEN_BRIGHTNESS_MODE_MANUAL) != SCREEN_BRIGHTNESS_MODE_MANUAL);
             }
         }
     };
