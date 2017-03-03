@@ -1,4 +1,4 @@
-/*
+o/*
  * Copyright (C) 2006 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,6 +111,7 @@ import android.service.dreams.IDreamManager;
 import android.speech.RecognizerIntent;
 import android.telecom.TelecomManager;
 import android.service.gesture.EdgeGestureManager;
+import android.util.BoostFramework;
 import android.util.DisplayMetrics;
 import android.util.EventLog;
 import android.util.Log;
@@ -465,6 +466,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     Handler mHandler;
     WindowState mLastInputMethodWindow = null;
     WindowState mLastInputMethodTargetWindow = null;
+
+    private BoostFramework mPerf = null;
+    private boolean lIsPerfBoostEnabled;
+    private int[] mBoostParamValWeak;
+    private int[] mBoostParamValStrong;
 
     // FIXME This state is shared between the input reader and handler thread.
     // Technically it's broken and buggy but it has been like this for many years
@@ -1969,6 +1975,18 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         mPowerManagerInternal = LocalServices.getService(PowerManagerInternal.class);
         mAppOpsManager = (AppOpsManager) mContext.getSystemService(Context.APP_OPS_SERVICE);
         mHasFeatureWatch = mContext.getPackageManager().hasSystemFeature(FEATURE_WATCH);
+
+
+        // Initialise Keypress Boost
+        lIsPerfBoostEnabled = context.getResources().getBoolean(
+                com.android.internal.R.bool.config_enableKeypressBoost);
+        mBoostParamValWeak = context.getResources().getIntArray(
+                com.android.internal.R.array.keypressboost_weak_param_value);
+        mBoostParamValStrong = context.getResources().getIntArray(
+                com.android.internal.R.array.keypressboost_strong_param_value);
+        if (lIsPerfBoostEnabled) {
+            mPerf = new BoostFramework();
+        }
 
         // Init display burn-in protection
         boolean burnInProtectionEnabled = context.getResources().getBoolean(
@@ -4681,6 +4699,39 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         return mSearchManager;
     }
 
+    private void dispatchKeypressBoost(int keyCode) {
+        int mBoostDuration = 0;
+        int[] mBoostParamVal = mBoostParamValWeak;
+
+        // Calculate the duration of the boost
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_UNKNOWN:
+                return;
+            case KeyEvent.KEYCODE_APP_SWITCH:
+            case KeyEvent.KEYCODE_BACK:
+            case KeyEvent.KEYCODE_ENTER:
+            case KeyEvent.KEYCODE_HOME:
+            case KeyEvent.KEYCODE_SOFT_LEFT:
+            case KeyEvent.KEYCODE_SOFT_RIGHT:
+                mBoostDuration = 300;
+                break;
+            case KeyEvent.KEYCODE_CAMERA:
+            case KeyEvent.KEYCODE_POWER:
+                mBoostDuration = 500;
+                mBoostParamVal = mBoostParamValStrong;
+                break;
+            case KeyEvent.KEYCODE_MEDIA_PLAY:
+                mBoostDuration = 650;
+                break;
+        }
+
+        // Dispatch the boost
+        if (mBoostDuration != 0) {
+            Slog.i(TAG, "Dispatching Keypress boost for " + mBoostDuration + " ms.");
+            mPerf.perfLockAcquire(mBoostDuration, mBoostParamVal);
+        }
+    }
+
     private void preloadRecentApps() {
         mPreloadedRecentApps = true;
         StatusBarManagerInternal statusbar = getStatusBarManagerInternal();
@@ -6736,6 +6787,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     hapticFeedbackRequested = true;
                 }
             }
+        }
+
+        // Intercept the Keypress event for Keypress boost
+        if (lIsPerfBoostEnabled) {
+            dispatchKeypressBoost(keyCode);
         }
 
         // Basic policy based on interactive state.
