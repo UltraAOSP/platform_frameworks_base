@@ -123,6 +123,9 @@ import java.util.Set;
 import java.util.Stack;
 
 import static android.service.notification.NotificationListenerService.Ranking.IMPORTANCE_HIGH;
+import static android.service.notification.NotificationListenerService.Ranking.IMPORTANCE_MIN;
+import static android.service.notification.NotificationListenerService.Ranking.IMPORTANCE_VERY_LOW;
+import static android.service.notification.NotificationListenerService.Ranking.importanceToLevel;
 
 public abstract class BaseStatusBar extends SystemUI implements
         CommandQueue.Callbacks, ActivatableNotificationView.OnActivatedListener,
@@ -2334,7 +2337,9 @@ public abstract class BaseStatusBar extends SystemUI implements
     }
 
     public boolean shouldShowOnKeyguard(StatusBarNotification sbn) {
-        return mShowLockscreenNotifications && !mNotificationData.isAmbient(sbn.getKey());
+        return mShowLockscreenNotifications && !mNotificationData.isAmbient(sbn.getKey())
+            && importanceToLevel(mNotificationData.getImportance(sbn.getKey()))
+               > importanceToLevel(IMPORTANCE_VERY_LOW);
     }
 
     protected void setZenMode(int mode) {
@@ -2588,7 +2593,8 @@ public abstract class BaseStatusBar extends SystemUI implements
             return false;
         }
 
-        if (mNotificationData.getImportance(sbn.getKey()) < IMPORTANCE_HIGH) {
+        if (importanceToLevel(mNotificationData.getImportance(sbn.getKey()))
+            < importanceToLevel(IMPORTANCE_HIGH)) {
             if (DEBUG) Log.d(TAG, "No peeking: unimportant notification: " + sbn.getKey());
             return false;
         }

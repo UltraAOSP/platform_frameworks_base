@@ -57,4 +57,64 @@
     <!-- [CHAR LIMIT=130] Location detail panel, description for sensors only mode -->
     <string name="quick_settings_location_detail_mode_sensors_only_description">Use GPS to determine your location</string>
 
+    <!-- [CHAR LIMIT=NONE] Importance Tuner setting title -->
+    <string name="cm_power_notification_controls_description">With power notification controls, you can set an importance level from 0 to 6 for an app\'s notifications.
+        \n\n<b>Level 6</b>
+        \n- Show at the top of the notification list
+        \n- Allow full screen interruption
+        \n- Always peek
+        \n\n<b>Level 5</b>
+        \n- Prevent full screen interruption
+        \n- Always peek
+        \n\n<b>Level 4</b>
+        \n- Prevent full screen interruption
+        \n- Never peek
+        \n\n<b>Level 3</b>
+        \n- Prevent full screen interruption
+        \n- Never peek
+        \n- Never make sound and vibration
+        \n\n<b>Level 2</b>
+        \n- Prevent full screen interruption
+        \n- Never peek
+        \n- Never make sound or vibrate
+        \n- Hide from lock screen
+        \n- Show at the bottom of the notification list
+        \n\n<b>Level 1</b>
+        \n- Prevent full screen interruption
+        \n- Never peek
+        \n- Never make sound or vibrate
+        \n- Hide from lock screen and status bar
+        \n- Show at the bottom of the notification list
+        \n\n<b>Level 0</b>
+        \n- Block all notifications from the app
+    </string>
+
+    <!-- Notification importance level title-->
+    <string name="importance_level_title">Importance: Level %1$d</string>
+
+    <!-- [CHAR LIMIT=100] Notification Importance slider: very low importance level description -->
+    <string name="notification_importance_very_low">No full screen interruption, peeking, sound, or vibration. Hide from lock screen.</string>
+
+    <!-- Screen pinning dialog description (for devices without navbar) -->
+    <string name="screen_pinning_description_no_navbar">This keeps it in view until you unpin. Touch and hold the Back button to unpin.</string>
+
+    <!-- Strings for lockscreen shortcut hints -->
+    <string name="left_shortcut_hint">Swipe right for %1$s</string>
+    <string name="right_shortcut_hint">Swipe left for %1$s</string>
+
+    <string name="lockscreen_message">Tap an icon on the left or right to reassign a lock screen shortcut.</string>
+    <string name="lockscreen_default_target">Default</string>
+    <string name="select_application">Select application</string>
+    <string name="lockscreen_choose_action_title">Choose action</string>
+    <string name="lockscreen_none_target">None</string>
+
+    <!-- Play queue -->
+    <string name="play_queue_extension">Show play queue</string>
+
+    <!-- Weather string format in keyguard -->
+    <string name="keyguard_status_view_weather_format"><xliff:g id="temp">%1$s</xliff:g> <xliff:g id="condition">%2$s</xliff:g></string>
+
+    <string name="accessibility_dpad_left">Cursor left</string>
+    <string name="accessibility_dpad_right">Cursor right</string>
+
 </resources>
