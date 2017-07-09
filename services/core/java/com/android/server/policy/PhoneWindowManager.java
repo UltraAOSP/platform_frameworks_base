@@ -1,4 +1,4 @@
-o/*
+/*
  * Copyright (C) 2006 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -921,14 +921,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     backMultiPressAction((Long) msg.obj, msg.arg1);
                     finishBackKeyPress();
                     break;
-                case MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK: {
-                    KeyEvent event = (KeyEvent) msg.obj;
-                    mVolBtnLongPress = true;
-                    dispatchMediaKeyWithWakeLockToAudioService(event);
-                    dispatchMediaKeyWithWakeLockToAudioService(
-                            KeyEvent.changeAction(event, KeyEvent.ACTION_UP));
-                    break;
-                }
                 case MSG_DISPATCH_KEYPRESS_BOOST_UNBLOCK:
                     mKeypressBoostBlocked = false;
                     break;

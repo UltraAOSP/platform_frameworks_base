@@ -102,6 +102,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import android.util.BoostFramework;
 
 /**
  * Helper class for {@link ActivityManagerService} responsible for multi-user functionality.
