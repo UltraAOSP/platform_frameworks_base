@@ -3721,6 +3721,12 @@ public final class Settings {
         public static final String BUTTON_BRIGHTNESS_ENABLED = "button_brightness_enabled";
 
         /**
+         * Quick Settings number of columns
+         * @hide
+         */
+        public static final String QS_LAYOUT_COLUMNS = "qs_layout_columns";
+
+        /**
          * Whether user can swap navigation lateral keys.
          * <p>
          * Type: int (0 for false, 1 for true)
