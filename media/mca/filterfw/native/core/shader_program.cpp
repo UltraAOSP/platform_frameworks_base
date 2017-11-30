@@ -1028,11 +1028,7 @@ bool ShaderProgram::SetAttributeValues(ProgramVar var,
   attrib.values = data_cpy;
   attrib.owned_data = data_cpy; // Marks this for deletion later on
 
-  if (StoreAttribute(attrib))
-    return true;
-  // If storing this failed, then it won't be deleted on its own.
-  delete[] data_cpy;
-  return false;
+  return StoreAttribute(attrib);
 }
 
 bool ShaderProgram::StoreAttribute(VertexAttrib attrib) {
