@@ -2949,5 +2949,4 @@
 
     <!-- Whether to show emergency button in power menu -->
     <bool name="config_showEmergencyButtonInPowerMenu">false</bool>
-
 </resources>
